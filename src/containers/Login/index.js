@@ -9,8 +9,8 @@ const Login = ({history}) => {
     const [isLoginAttemptSuccess, setState] = useState(true)
     
     const attemptLogin = (username, password) => {
-        // if (username === 'Luke Skywalker' && password === '19BBY') {
-        if (username === '1' && password === '1') {
+        if (username === 'Luke Skywalker' && password === '19BBY') {
+        // if (username === '1' && password === '1') {
             localStorage.setItem('isLoggedIn', true)
             history.push("/search")
         } else {

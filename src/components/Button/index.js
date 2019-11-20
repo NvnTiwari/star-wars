@@ -19,7 +19,7 @@ const Button = ({
 Button.propTypes = {
     className: PropTypes.string,
     onClick: PropTypes.func.isRequired,
-    children: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
 }
 
 Button.defaultProps = {
