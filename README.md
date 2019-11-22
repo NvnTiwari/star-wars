@@ -1,6 +1,6 @@
 ## Live Demo
 
-http://telling-society.surge.sh/
+http://obeisant-dogs.surge.sh
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
