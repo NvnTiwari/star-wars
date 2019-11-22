@@ -26,7 +26,7 @@ const Navbar = ({ history }) => {
                 <div className="navbar-end">
                     <div className="navbar-item">
                         <div className="buttons">
-                            <a className="button is-light" onClick={attemptLogout}>
+                            <a className="button is-danger" onClick={attemptLogout}>
                                 Logout
                             </a>
                         </div>

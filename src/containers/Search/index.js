@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Field from './../../components/Field';
 import TextField from './../../components/TextField';
-import Button from './../../components/Button';
 import Navbar from './../../components/Navbar';
 
 import './Search.scss';
@@ -15,7 +14,7 @@ const Search = ({ history }) => {
     const changeHandler = (event) => { 
         const { value } = event.target;
         const { planets } = state;
-        const filteredPlanets = planets.filter((planet) => planet.name.toLowerCase().includes(value.toLowerCase())) || []
+        const filteredPlanets = planets.filter((planet) => planet.name.toLowerCase().includes(value.toLowerCase())) || [];
         setState({ value, selectedPlanet: null, filteredPlanets })
     }
 
@@ -38,13 +37,40 @@ const Search = ({ history }) => {
             url: `/planets?format=json`
         }).then((response) => {
             setState({
-                planets: response.data.results
+                planets: response.data.results.sort((a, b) => {
+                    if(a.population < b.population) { return -1; }
+                    if(a.population > b.population) { return 1; }
+                    return 0;
+                })
             })
         })
     }, [])
 
-    const { value, filteredPlanets, selectedPlanet } = state
+    const { value, filteredPlanets, selectedPlanet, planets } = state;
+    let sortedPlanets;
 
+    {/* Added Condition for sorted according to population Planet Lists */}
+    if (filteredPlanets.length > 0 && filteredPlanets.length !== planets.length) {
+        sortedPlanets = sortedPlanets = !selectedPlanet && <div className="columns">
+                                        <div className="column">
+                                            {value.length > 0 && <ul>
+                                                { filteredPlanets.map((planet, index) => {
+                                                    return (<li data-index={index} onClick={selectPlanet} key={index}>{planet.name}</li>)
+                                                }) }
+                                            </ul> }
+                                        </div>
+                                    </div>
+    } else {
+        sortedPlanets =   <div className="columns">
+                <div className="column">
+                    {<ul>
+                        { planets.map((planet, index) => {
+                            return (<li style = {{ width: (index+2)*50 }} data-index={index} onClick={selectPlanet} key={index}>{planet.name}</li>)
+                        }) }
+                    </ul> }
+                </div>
+            </div>
+    }
     return (
         <div>
             <Navbar />
@@ -63,15 +89,7 @@ const Search = ({ history }) => {
                             </Field>
                         </div>
                     </div>
-                    {!selectedPlanet && <div className="columns">
-                        <div className="column">
-                            {value.length > 0 && <ul>
-                                { filteredPlanets.map((planet, index) => {
-                                    return (<li data-index={index} onClick={selectPlanet} key={index}>{planet.name}</li>)
-                                }) }
-                            </ul> }
-                        </div>
-                    </div>}
+                    {sortedPlanets}
                     {selectedPlanet && <div className="columns">
                         <div className="column">
                             <div className="columns">
